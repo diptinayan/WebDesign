@@ -1,0 +1,141 @@
+Link: https://codepen.io/diptinayan/pen/QQyoKG
+HTML link: https://codepen.io/diptinayan/pen/QQyoKG.html
+css link: https://codepen.io/diptinayan/pen/QQyoKG.css
+js link: https://codepen.io/diptinayan/pen/QQyoKG.js
+
+
+<body>
+<section id="cover">
+    <div class="cover-cap">
+      <div class="container">
+        <div class="col-sm-12 col-md-12 col-lg-12 text-center ">
+          <h1>Quote Machine</h1>
+          <div class="shift">
+	          <div class="quotes">
+	          	<div class="mainquotes">
+	          <h3 id="bring">
+						
+	          		</h3>
+	          		<div class="author"></div>		
+	          	</div>
+	   		<div class="row">
+		   		<div class="col-lg-6 twitter-container">
+			   		<a class="twitter-share-button" href="https://twitter.com/intent/tweet" data-size="large" target="_blank">
+				   		<span class="twitter fa-stack fa-lg">
+				       	<i class="fa fa-twitter fa-1x" aria-hidden="true"></i>
+				       	</span>
+			        </a>
+		        </div>
+	          	<div class="col-lg-6 nextquote">
+	          		<button id="newquote" class="btn btn-default pull-right btn-lg">
+	          		
+						<span class="sr-only">Loading...</span>New Quote
+					</button>
+	          	</div>
+	        </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+    </div>
+  </section>
+</body>
+
+html,body{
+	height: 100%;
+	font-family: segoe ui;
+}
+
+#cover{
+	background-image:url(https://image.freepik.com/free-photo/wooden-board-empty-table-in-front-of-blurred-background-perspective-brown-wood-table-over-blur-trees-in-forest-background-can-be-used-mock-up-for-display-or-montage-your-products-autumn-season_1253-1146.jpg);
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	height: 100%;
+	color: black;
+	display: flex;
+	text-align: center;
+
+	
+}
+
+.cover-cap{
+	width: 100%;
+
+}
+.shift{
+	margin-top: 7%;
+}
+
+.quotes{
+	padding: 20px;
+	box-shadow: 0 1px 5px 1px #ddd;
+	height: 200px auto;
+	border-radius: 10px;
+	width: 70%;
+	margin:auto;
+	
+}
+
+
+.author{
+text-align: right;
+margin-right: 20%;
+font-size: 170%;
+font-style: italic;
+font-weight: bold;
+}
+
+.nextquote{
+	text-align: right;
+}
+
+.btn ,.btn-default{
+	background-color: transparent;
+	color: white;
+	margin:auto;
+}
+
+.loader{
+	display:none;
+}
+
+.twitter-container{
+	margin-left: 0;
+
+}
+
+.twitter{
+	width:40px;
+	height: 40px;
+	margin-left: inherit;
+	border: 1px solid white;
+	align-items: center;
+	border-radius:50%;
+	padding:4px;
+	color:white;
+	cursor: pointer;
+}
+
+function newquote() {
+  $.ajax({
+    url:
+      "https://cors-anywhere.herokuapp.com/https://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&return=jsonp",
+    
+    success: function(json) {
+      $("#bring").html(json[0]['content']);
+      
+      tweeturl = "https://twitter.com/intent/tweet?text=" + json[0]['content'] + " by " + json[0]['title'] +"&hashtags=famousQuotes";
+      $(".twitter-share-button").attr("href", tweeturl);
+    },
+    
+  });
+}
+$(document).ready(function() {
+  newquote();
+  $("#newquote").on("click", function() {
+    newquote();
+  });
+});
