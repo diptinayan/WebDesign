@@ -1,0 +1,200 @@
+Link: https://codepen.io/diptinayan/pen/wyGyME
+
+Html link: https://codepen.io/diptinayan/pen/wyGyME.html
+Css link: https://codepen.io/diptinayan/pen/wyGyME.css
+js link: https://codepen.io/diptinayan/pen/wyGyME.js
+
+code:
+<div id="main-center"
+  class="container text-center">
+ <div id="app-header">
+   <h1>Weather Forcast</h1>
+  </div>
+  <div id="frame">
+    <div id="screen">
+      <h2 id="weather">
+        <span id="cel"></span>
+        <span id="far"></span></h2>
+      <figure class="icons">
+        <canvas id="icon" width="120" height="120"></canvas>
+			<figcaption id="conditions"></figcaption></figure>
+	  </div>
+	  <h3 id="currentLocation"><span id="location"></span></h3>
+	</div>
+	<div id="button-area" 
+		  class="row">
+		<button id="celbutton" class="col-xs-3 col-xs-offset-2 active">Celsius</button>
+		<button id="farButton" class="col-xs-3 col-xs-offset-2">Farhenheit</button>
+	</div>
+	<div class="col-md-6 col-md-offset-3 text-center small">
+		<p>Coded by<a id="footerLink"
+						  href="https://www.freecodecamp.org/diptinayan" target="_blank"> Dipti Nayan</a></p>
+	</div>
+	
+  @import url(https://fonts.googleapis.com/css?family=Roboto+Slab:700);
+body{
+	background-image:url(https://mexmob.files.wordpress.com/2016/04/768235-floral-floral-texture-gradient-graphics-pattern-vectors.jpg);
+	height: 100%;
+	color: white;
+	display: flex;
+	text-align: center;
+}
+#main-center{
+	font-family:'Robot Slab',serif;
+	color:#00698C;
+	margin-top: 4em;
+	margin-bottom: 4em;
+}
+#frame{
+	color: white;
+	background-color: grey;
+	padding: 2.5em;
+	border-radius: 25px;
+	opacity: .86;
+	
+}
+#weather{
+	font-size: 3em;
+}
+.night{
+/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#133f72+0,0b344f+20,152030+49,0b344f+80,133f72+100 */
+background: rgb(19,63,114); /* Old browsers */
+background: -moz-linear-gradient(-45deg,  rgba(19,63,114,1) 0%, rgba(11,52,79,1) 20%, rgba(21,32,48,1) 49%, rgba(11,52,79,1) 80%, rgba(19,63,114,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(-45deg,  rgba(19,63,114,1) 0%,rgba(11,52,79,1) 20%,rgba(21,32,48,1) 49%,rgba(11,52,79,1) 80%,rgba(19,63,114,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(135deg,  rgba(19,63,114,1) 0%,rgba(11,52,79,1) 20%,rgba(21,32,48,1) 49%,rgba(11,52,79,1) 80%,rgba(19,63,114,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#133f72', endColorstr='#133f72',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+}
+.day {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#b3dced+0,29b8e5+50,bce0ee+100;Blue+Pipe */
+background: rgb(179,220,237); /* Old browsers */
+background: -moz-linear-gradient(left,  rgba(179,220,237,1) 0%, rgba(41,184,229,1) 50%, rgba(188,224,238,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(left,  rgba(179,220,237,1) 0%,rgba(41,184,229,1) 50%,rgba(188,224,238,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to right,  rgba(179,220,237,1) 0%,rgba(41,184,229,1) 50%,rgba(188,224,238,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dced', endColorstr='#bce0ee',GradientType=1 ); /* IE6-9 */
+
+}
+#button-area{
+	margin: 1em;
+}
+button{
+	position:relative;
+	padding: 1em;
+	outline: 0;
+	background-color: #00698C;
+	color: white;
+	border: none;
+	opacity: .5;
+	border-bottom: 5px solid #0093C4;
+	border-radius: 45px;
+	-webkit-transition: all .3s ease-in-out;
+	-moz-transition: allw .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+}
+.active{
+	background-color: #003B4F;
+	top: 5px;
+   transition: all .8s ease-out;
+}
+a{
+	color: white;
+}
+
+$(document).ready(function(){
+	var city, country, latitude, longitude, urlCel, urlFar;
+	$.getJSON(" https://ipapi.co/json", function(location){
+			city = location.city;
+			country = location.country;
+			latitude = location.latitude;
+			longitude = location.longitude;
+			urlCel= "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon="+ 
+			longitude +"&units=metric&APPID=468c13e532e7023e736ce19428fecf48";
+			urlFar= "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon="+ 
+			longitude +"&units=imperial&APPID=468c13e532e7023e736ce19428fecf48";
+			$('#location').html(city + ", " + country + ".");
+			$.getJSON(urlCel, function(json){
+            	var iconsDay = new Skycons({"color": "gold"}), iconsNight = new Skycons({"color": "DarkSlateBlue"}),
+            	 	iconsCloud = new Skycons({"color": "DodgerBlue"}); 
+            	var condId = json.weather[0].id, conditions = json.weather[0].description, i;
+            	var date = new Date(), hour = date.getHours();
+
+				if(condId == 800){ 
+					if(hour < 6 || hour >= 19){
+						iconsNight.set("icon", "clear-night");
+						iconsNight.play();
+					}
+					else{
+						iconsDay.set("icon", "clear-day");
+						iconsDay.play();
+					}
+				} // clear
+				else if(condId > 800 && condId < 900){
+					if(condId < 803){
+						if(hour < 6 || hour >= 19){
+							iconsNight.set("icon", "partly-cloudy-night");
+							iconsNight.play();
+						}
+						else{
+							iconsDay.set("icon", "partly-cloudy-day");
+							iconsDay.play();
+						}
+					}
+					else{
+						iconsCloud.set("icon", "cloudy");
+						iconsCloud.play();
+					}
+				} //partly or fully cloudy
+				else if(condId > 300 && condId < 400){
+						iconsCloud.set("icon", "sleet");
+						iconsCloud.play();
+
+				}// drizzle
+				else if(condId > 500 && condId < 600){
+					iconsCloud.set("icon", "rain");
+					iconsCloud.play();
+				}// rain
+				else if(condId > 600 && condId < 700){
+					iconsCloud.set("icon", "snow");
+					iconsCloud.play();					
+				}//snow
+				else if(condId > 700 && condId < 800){
+					iconsCloud.set("icon", "fog");
+					iconsCloud.play();					
+				}//atmosphere
+				else if(condId !== 951){
+					iconsCloud.set("icon", "wind");
+					iconsCloud.play();
+				}//windy or storm
+				if(hour < 6 || hour >= 19){
+					conditions += " night";
+					$('#frame').addClass('night');
+				}
+				else{
+					conditions += " day";
+					$('#frame').addClass('day');
+				}
+				conditions = conditions.substr(0,1).toUpperCase()+conditions.substr(1)+".";
+				$('#cel').html(json.main.temp + " °C.");
+				$('#conditions').html(conditions);
+			});
+			$.getJSON(urlFar, function(json){
+				$('#far').html(json.main.temp + " °F.");
+			});
+		}); //Obtiene todos los datos haciendo una sola llamada.
+	$('#far').fadeOut(0); //Esconde la temperatura en Farenheit.
+	function changeUnits(newUnit, oldUnit){ 
+		$(newUnit+"Button").addClass('active');
+		$(oldUnit+"Button").removeClass('active');
+		$(oldUnit).fadeOut(250, function(){
+			$(newUnit).fadeIn(250);
+		});
+	}; 
+	$('#celButton').click(function(){
+		changeUnits("#cel","#far");
+	}); 
+	$('#farButton').click(function(){
+		changeUnits("#far","#cel");
+	}); 
+
+});
